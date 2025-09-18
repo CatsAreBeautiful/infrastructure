@@ -1,0 +1,13 @@
+- name: Setup neko
+  hosts: neko
+  become: true
+
+  roles:
+    - networks
+    - directorys
+    - sftpgo
+    - anonymousoverflow
+    - proxitok
+    - redlib
+    - searxng
+    - caddy

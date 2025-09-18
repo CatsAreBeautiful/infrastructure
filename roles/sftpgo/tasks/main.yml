@@ -1,0 +1,21 @@
+---
+- name: Deploy sftpgo
+  community.docker.docker_container:
+    name: sftpgo
+    image: drakkan/sftpgo:v2.6.6-alpine
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    ports:
+      - 21:21/tcp
+      - 21000-21010:21000-21010/tcp
+    volumes:
+      - /srv/webdata:/srv/sftpgo/data
+      - /srv/sftpgo/backups:/srv/sftpgo/backups
+      - /srv/sftpgo/home:/var/lib/sftpgo
+    env:
+      SFTPGO_FTPD__BINDINGS__0__PORT: "21"
+      SFTPGO_FTPD__PASSIVE_PORT_RANGE__START: "21000"
+      SFTPGO_FTPD__PASSIVE_PORT_RANGE__END: "21010"
+    networks:
+      - name: hosting

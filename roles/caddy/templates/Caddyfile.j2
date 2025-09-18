@@ -1,0 +1,28 @@
+{
+  admin off
+  log {
+    output stderr
+    format filter {
+      request>remote_ip ip_mask 8 32
+      request>client_ip ip_mask 8 32
+      request>remote_port delete
+      request>headers delete
+      request>uri query {
+        delete url
+        delete h
+        delete q
+      }
+    }
+  }
+
+  servers {
+    client_ip_headers X-Forwarded-For X-Real-IP
+
+    # Allow the following IP to passthrough the "X-Forwarded-*" headers to SearXNG
+    # https://caddyserver.com/docs/caddyfile/options#trusted-proxies
+    trusted_proxies static private_ranges
+    trusted_proxies_strict
+  }
+}
+
+import sites/*

@@ -1,0 +1,3 @@
+redlib.{{ domain }} {
+  reverse_proxy redlib:8080
+}

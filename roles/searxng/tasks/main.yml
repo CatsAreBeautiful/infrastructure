@@ -1,0 +1,50 @@
+---
+- name: Deploy searxng settings
+  ansible.builtin.template:
+    src: settings.yml.j2
+    dest: /srv/searxng/settings.yml
+    mode: "0644"
+
+- name: Deploy searxng limiter
+  ansible.builtin.template:
+    src: limiter.toml.j2
+    dest: /srv/searxng/limiter.toml
+    mode: "0644"
+
+- name: Deploy valkey
+  community.docker.docker_container:
+    name: searxng_redis
+    image: valkey/valkey:8.1.3-alpine
+    pull: true
+    recreate: true
+    command: valkey-server --save 30 1 --loglevel warning
+    restart_policy: unless-stopped
+    volumes:
+      - /srv/searxng/redis-data:/data
+    cap_drop:
+      - ALL
+    capabilities:
+      - CHOWN
+      - SETGID
+      - SETUID
+    networks:
+      - name: searxng
+
+- name: Deploy searxng
+  community.docker.docker_container:
+    name: searxng
+    image: searxng/searxng@sha256:9c071b8685d6586692072df2eaa48a0adb8e53d13e18cb53e21924837c5803d7
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    volumes:
+      - /srv/searxng:/etc/searxng
+      - /srv/searxng/settings.yml:/etc/searxng/settings.yml
+      - /srv/searxng/limiter.toml:/etc/searxng/limiter.toml
+    env:
+      SEARXNG_BASE_URL: https://search.{{ domain }}
+      SEARXNG_REDIS_URL: redis://searxng_redis
+      SEARXNG_SECRET: "{{ searxng_secret }}"
+    networks:
+      - name: core
+      - name: searxng

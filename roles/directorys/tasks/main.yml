@@ -1,0 +1,14 @@
+---
+- name: Create directories with conditional ownership
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+  loop:
+    - { path: "/srv/caddy" }
+    - { path: "/srv/caddy/sites" }
+    - { path: "/srv/webdata", owner: "1000", group: "1000" }
+    - { path: "/srv/sftpgo" }
+    - { path: "/srv/searxng" }

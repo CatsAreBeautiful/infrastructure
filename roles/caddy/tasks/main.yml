@@ -1,0 +1,41 @@
+---
+- name: Deploy Caddyfile
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /srv/caddy/Caddyfile
+    mode: "0644"
+
+- name: Deploy per site configs
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: /srv/caddy/sites/
+    mode: "0644"
+  loop: "{{ lookup('fileglob', '../templates/sites/*', wantlist=True) }}"
+
+- name: Deploy caddy
+  community.docker.docker_container:
+    name: caddy
+    image: caddy:2.10.2-alpine
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - /srv/caddy/:/etc/caddy/:ro
+      - /srv/webdata:/var/www:ro
+      - /srv/caddy/data:/data:rw
+      - /srv/caddy/config:/config:rw
+    read_only: true
+    security_opts:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    capabilities:
+      - NET_BIND_SERVICE
+    networks:
+      - name: core
+      - name: hosting
+      - name: services

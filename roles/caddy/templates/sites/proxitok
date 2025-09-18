@@ -1,0 +1,3 @@
+proxitok.{{ domain }} {
+  reverse_proxy proxitok:8080
+}

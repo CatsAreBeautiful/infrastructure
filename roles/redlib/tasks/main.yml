@@ -1,0 +1,20 @@
+---
+- name: Deploy redlib
+  community.docker.docker_container:
+    name: redlib
+    image: quay.io/redlib/redlib@sha256:c1fcda90dca9447d4aa7e18fd3ef85cc2044c29263490159e1ae4b472d0f285c
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    user: nobody
+    read_only: true
+    cap_drop:
+      - ALL
+    networks:
+      - name: core
+    security_opts:
+      - no-new-privileges:true
+    healthcheck:
+      test: [CMD, wget, --spider, -q, --tries=1, http://localhost:8080/settings]
+      interval: 5m
+      timeout: 3s
