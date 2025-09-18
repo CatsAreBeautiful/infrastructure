@@ -57,5 +57,5 @@
       - SETGID
       - SETUID
     networks:
-      - name: core
+      - name: services
       - name: proxitok

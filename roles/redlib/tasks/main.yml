@@ -1,4 +1,17 @@
 ---
+- name: Deploy anubis
+  community.docker.docker_container:
+    name: anubis
+    image: ghcr.io/techarohq/anubis:latest
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    networks:
+      - name: services
+    env:
+      BIND: ":3000"
+      TARGET: http://redlib:8080
+
 - name: Deploy redlib
   community.docker.docker_container:
     name: redlib
@@ -11,7 +24,7 @@
     cap_drop:
       - ALL
     networks:
-      - name: core
+      - name: services
     security_opts:
       - no-new-privileges:true
     healthcheck:
