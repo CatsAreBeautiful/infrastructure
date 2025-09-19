@@ -1,0 +1,9 @@
+---
+- name: Deploy mozhi
+  community.docker.docker_container:
+    name: mozhi
+    image: codeberg.org/aryak/mozhi:latest
+    pull: true
+    recreate: true
+    networks:
+      - name: services
