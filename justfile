@@ -8,8 +8,8 @@ setup:
 
 # run ansible-lint
 lint:
-    ansible-lint --fix
+    (cd ansible && ansible-lint --fix)
 
 # run playbook
 run:
-    ansible-playbook main.yml -K
+    (cd ansible && ansible-playbook main.yml -K)
