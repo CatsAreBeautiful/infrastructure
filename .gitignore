@@ -1,3 +1,6 @@
 .ansible/
-.vault_pass
 .vscode/
+ansible/.vault_pass
+opentofu/terraform.tfstate
+opentofu/.terraform.lock.hcl
+opentofu/.terraform
