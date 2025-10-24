@@ -1,2 +1,2 @@
 ---
-sftpgo_image: drakkan/sftpgo:v2.6.6-alpine
+sftpgo_image: drakkan/sftpgo:v2.7.0-alpine
