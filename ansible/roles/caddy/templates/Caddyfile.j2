@@ -23,6 +23,10 @@
     trusted_proxies static private_ranges
     trusted_proxies_strict
   }
+
+  on_demand_tls {
+    ask http://api:3000/check
+  }
 }
 
 import sites/*

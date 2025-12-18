@@ -12,6 +12,16 @@
     mode: "0644"
   loop: "{{ lookup('fileglob', '../templates/sites/*', wantlist=True) }}"
 
+- name: Deploy api
+  community.docker.docker_container:
+    name: api
+    image: ghcr.io/catsarebeautiful/api:0.0.4
+    pull: true
+    recreate: true
+    restart_policy: unless-stopped
+    networks:
+      - name: core
+
 - name: Deploy caddy
   community.docker.docker_container:
     name: caddy
@@ -24,11 +34,11 @@
       - 443:443
       - 443:443/udp
     volumes:
-      - /srv/caddy/:/etc/caddy/:ro
+      - /srv/caddy/:/etc/caddy/:rw
       - /srv/webdata:/var/www:ro
       - /srv/caddy/data:/data:rw
       - /srv/caddy/config:/config:rw
-    read_only: true
+    # read_only: true
     security_opts:
       - no-new-privileges:true
     cap_drop:
