@@ -25,7 +25,7 @@
 - name: Deploy caddy
   community.docker.docker_container:
     name: caddy
-    image: caddy:2.10.2-alpine
+    image: caddy:2.11.1-alpine
     pull: true
     recreate: true
     restart_policy: unless-stopped
