@@ -14,7 +14,7 @@
 - name: Deploy valkey
   community.docker.docker_container:
     name: searxng_redis
-    image: valkey/valkey:9.0.2-alpine
+    image: valkey/valkey:9.0.3-alpine
     pull: true
     recreate: true
     command: valkey-server --loglevel warning
