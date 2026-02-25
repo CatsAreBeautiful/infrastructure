@@ -1,3 +1,0 @@
-sftpgo.{{ domain }} {
-  reverse_proxy sftpgo:8080
-}

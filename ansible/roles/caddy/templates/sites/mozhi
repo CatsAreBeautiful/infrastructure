@@ -1,3 +1,0 @@
-mozhi.{{ domain }} {
-  reverse_proxy mozhi:3000
-}

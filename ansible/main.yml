@@ -1,13 +1,7 @@
+---
 - name: Setup neko
   hosts: neko
   become: true
 
   roles:
-    - networks
-    - directorys
-    - sftpgo
-    - anonymousoverflow
-    - redlib
-    - searxng
-    - mozhi
-    - caddy
+    - dococd

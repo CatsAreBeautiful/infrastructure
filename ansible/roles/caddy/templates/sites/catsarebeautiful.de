@@ -1,4 +1,0 @@
-catsarebeautiful.de {
-  root * /var/www/torben/catsarebeautiful.de
-  file_server
-}
